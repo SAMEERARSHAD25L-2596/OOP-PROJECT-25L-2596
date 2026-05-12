@@ -1,4 +1,5 @@
-﻿#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <string>
@@ -18,21 +19,24 @@
 #include "Machinegun.h"
 #include "Wizardtower.h"
 #include "archertower.h"
+using namespace std;
+using namespace sf;
 
-static const sf::Color C_GRASS_A(74, 120, 42, 255);
-static const sf::Color C_GRASS_B(60, 98, 34, 255);
-static const sf::Color C_PATH_BDR(130, 88, 36, 255);
-static const sf::Color C_PATH(190, 145, 80, 255);
-static const sf::Color C_HUD(18, 20, 28, 255);
-static const sf::Color C_GOLD(255, 215, 0, 255);
-static const sf::Color C_RED(220, 55, 55, 255);
 
-static sf::Text makeText(sf::Font& f, const std::string& s, unsigned sz) {
-    sf::Text t(s, f, sz);
+static const Color C_GRASS_A(74, 120, 42, 255);
+static const Color C_GRASS_B(60, 98, 34, 255);
+static const Color C_PATH_BDR(130, 88, 36, 255);
+static const Color C_PATH(190, 145, 80, 255);
+static const Color C_HUD(18, 20, 28, 255);
+static const Color C_GOLD(255, 215, 0, 255);
+static const Color C_RED(220, 55, 55, 255);
+
+static Text makeText(Font& f, const string& s, unsigned sz) {
+    Text t(s, f, sz);
     return t;
 }
 
-static void drawGrass(sf::RenderWindow& win) {
+static void drawGrass(RenderWindow& win) {
     const int T = 40;
     sf::RectangleShape tile(sf::Vector2f((float)T, (float)T));
     for (int y = 40; y < 600; y += T)
@@ -471,7 +475,13 @@ static bool runEndScreen(sf::RenderWindow& window, sf::Font& font,
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Tower Defense");
     window.setFramerateLimit(60);
-
+    // ── MUSIC ──
+    sf::Music music;
+    if (music.openFromFile("C:/Users/Dell/source/repos/MY GAME/x64/Debug/music.wav")) {
+        music.setLoop(true);
+        music.setVolume(50.f);
+        music.play();
+    }
     sf::Font font;
     bool hasFont = font.loadFromFile("C:/Windows/Fonts/arial.ttf");
     if (!hasFont) hasFont = font.loadFromFile("arial.ttf");
